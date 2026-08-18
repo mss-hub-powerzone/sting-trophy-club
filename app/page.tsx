@@ -90,7 +90,7 @@ export default async function Home() {
           <div className="heroPhoto">
             <img
               className="heroTeamPhoto"
-              src="/msu-preseason-camp-team.png"
+              src="/msu-preseason-camp-team.webp"
               alt="Sting Trophy Club U17 and U16 boys with Coach Meachum at Midwestern State University preseason camp"
             />
             <div className="heroPhotoShade" />
@@ -156,7 +156,7 @@ export default async function Home() {
       <section className="identity" id="identity">
         <div className="shell identityGrid">
           <div className="clubGraphic">
-            <img src="/sting-north-texas-club.png" alt="Sting North Texas home, away and goalkeeper kits" />
+            <img src="/sting-north-texas-club.webp" alt="Sting North Texas home, away and goalkeeper kits" />
             <b>PRIDE & TRADITION • SINCE 1973</b>
           </div>
           <div>
@@ -263,7 +263,7 @@ export default async function Home() {
           </div>
           <div className="reeVisual">
             <img className="reeMark" src="/reeplayer-mark.png" alt="" />
-            <img className="reeCamera" src="/reeplayer-camera.png" alt="Red Reeplayer AI soccer camera" />
+            <img className="reeCamera" src="/reeplayer-camera.webp" alt="Red Reeplayer AI soccer camera" />
             <span>AI-POWERED MATCH VIDEO</span>
           </div>
         </div>
@@ -293,8 +293,8 @@ export default async function Home() {
               Get directions <Arrow />
             </a>
           </div>
-          <a className="fieldMap" href="/trophy-club-field-map.png" target="_blank" rel="noreferrer">
-            <img src="/trophy-club-field-map.png" alt="Trophy Club field map and facility rules, with Sting Trophy Club training on Fields 1 and 2"/>
+          <a className="fieldMap" href="/trophy-club-field-map.webp" target="_blank" rel="noreferrer">
+            <img src="/trophy-club-field-map.webp" alt="Trophy Club field map and facility rules, with Sting Trophy Club training on Fields 1 and 2"/>
             <span>Open full field map <Arrow /></span>
           </a>
         </div>
@@ -303,7 +303,7 @@ export default async function Home() {
         <Title kicker="TEAM LEADERSHIP" title="The people behind the teams." copy="A home for coach bios, team-manager contacts and the volunteers who keep both teams moving." />
         <div className="coachGrid">
           <article className="coachCard hasPhoto jonPhoto"><img src="/coach-jon-barber.png" alt="Coach Jon Barber"/><div><small>U17 HEAD COACH • U16 ASSISTANT</small><h3>Coach Jon Barber</h3><p>Coach bio, playing philosophy and contact details coming soon.</p></div></article>
-          <article className="coachCard alt hasPhoto"><img src="/coach-wayne-smith.png" alt="Coach Wayne Smith"/><div><small>U16 HEAD COACH</small><h3>Coach Wayne Smith</h3><p>Coach bio, playing philosophy and contact details coming soon.</p></div></article>
+          <article className="coachCard alt hasPhoto"><img src="/coach-wayne-smith.webp" alt="Coach Wayne Smith"/><div><small>U16 HEAD COACH</small><h3>Coach Wayne Smith</h3><p>Coach bio, playing philosophy and contact details coming soon.</p></div></article>
         </div>
         <div className="teamSupport">
           <article><b>TEAM MANAGERS</b><p>Manager names, responsibilities and best contact routes can live here.</p><span>SECTION RESERVED</span></article>

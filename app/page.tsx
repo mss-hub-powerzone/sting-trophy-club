@@ -75,6 +75,7 @@ export default async function Home() {
           </a>
           <div className="navlinks">
             <a href="#teams">Teams</a>
+            <a href="#captains">Leadership</a>
             <a href="#identity">Our Club</a>
             <a href="#calendar">Calendar</a><a href="#media">Media</a>
             <a href="#location">Home Field</a>
@@ -151,6 +152,30 @@ export default async function Home() {
             items={["ECNL RL North Texas", "Classic League player pool"]}
             alt
           />
+        </div>
+      </section>
+      <section className="captains" id="captains">
+        <div className="shell">
+          <Title
+            kicker="TEAM LEADERSHIP"
+            title="The armband means something."
+            copy="Selected by their teammates and coaches, our captains are responsible for representing the Sting standard—in training, on matchday and away from the field."
+            light
+          />
+          <div className="captainTeams">
+            <CaptainTeam age="U17" names={["Evan", "Kyan", "Zach"]} />
+            <CaptainTeam age="U16" names={["Sawyer", "Logan", "Isaac"]} alt />
+          </div>
+          <div className="captainStandard">
+            <div className="standardIntro">
+              <p className="eyebrow">THE CAPTAIN STANDARD</p>
+              <h3>Not a reward.<br/>A responsibility.</h3>
+            </div>
+            <Standard number="01" title="With teammates" copy="Put the team first. Include people, encourage teammates when things get difficult and respond to mistakes with solutions—not blame." />
+            <Standard number="02" title="With coaches" copy="Be coachable, communicate honestly and respectfully, reset quickly and reinforce the standards asked of the group." />
+            <Standard number="03" title="At training" copy="Arrive ready to work. Bring energy, intensity and purpose. Lead through your habits before asking anyone to follow your words." />
+            <Standard number="04" title="On matchday" copy="Stay composed, compete for the full 90 and help the team remain connected through both momentum and adversity." />
+          </div>
         </div>
       </section>
       <section className="identity" id="identity">
@@ -299,7 +324,7 @@ export default async function Home() {
           </a>
         </div>
       </section>
-      <section className="leadership section shell" id="leadership">
+      <section className="leadership section shell" id="staff">
         <Title kicker="TEAM LEADERSHIP" title="The people behind the teams." copy="A home for coach bios, team-manager contacts and the volunteers who keep both teams moving." />
         <div className="coachGrid">
           <article className="coachCard hasPhoto jonPhoto"><img src="/coach-jon-barber.png" alt="Coach Jon Barber"/><div><small>U17 HEAD COACH • U16 ASSISTANT</small><h3>Coach Jon Barber</h3><p>Coach bio, playing philosophy and contact details coming soon.</p></div></article>
@@ -410,6 +435,56 @@ function Team({
           <small key={x}>• {x}</small>
         ))}
       </div>
+    </article>
+  );
+}
+function CaptainTeam({
+  age,
+  names,
+  alt = false,
+}: {
+  age: string;
+  names: string[];
+  alt?: boolean;
+}) {
+  return (
+    <div className={"captainTeam " + (alt ? "alt" : "")}>
+      <div className="captainTeamHead">
+        <span>{age}</span>
+        <div>
+          <small>2026/27</small>
+          <b>TEAM CAPTAINS</b>
+        </div>
+      </div>
+      <div className="captainCards">
+        {names.map((name) => (
+          <article className="captainCard" key={name}>
+            <span aria-hidden>{name.slice(0, 1)}</span>
+            <div>
+              <small>{age} CAPTAIN</small>
+              <h3>{name}</h3>
+              <p>Player profile, position and personal leadership commitment coming soon.</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+function Standard({
+  number,
+  title,
+  copy,
+}: {
+  number: string;
+  title: string;
+  copy: string;
+}) {
+  return (
+    <article>
+      <span>{number}</span>
+      <h4>{title}</h4>
+      <p>{copy}</p>
     </article>
   );
 }

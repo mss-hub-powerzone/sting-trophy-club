@@ -66,7 +66,7 @@ nav {
 }
 .navlinks {
   display: flex;
-  gap: 32px;
+  gap: 24px;
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -279,6 +279,138 @@ h1 em {
 }
 .team.alt small {
   color: #d9efff;
+}
+.captains {
+  background: #0b1421;
+  color: white;
+  padding: 100px 0;
+  overflow: hidden;
+}
+.captainTeams {
+  display: grid;
+  gap: 24px;
+}
+.captainTeam {
+  border: 1px solid #ffffff24;
+  background: #111d2c;
+}
+.captainTeam.alt {
+  background: #092a52;
+}
+.captainTeamHead {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 22px 26px;
+  border-bottom: 1px solid #ffffff24;
+}
+.captainTeamHead > span {
+  color: var(--cyan);
+  font-size: 40px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -.05em;
+}
+.captainTeamHead > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.captainTeamHead small {
+  color: #91a1b4;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .18em;
+}
+.captainTeamHead b {
+  font-size: 12px;
+  letter-spacing: .16em;
+}
+.captainCards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.captainCard {
+  min-height: 245px;
+  padding: 28px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  border-right: 1px solid #ffffff24;
+}
+.captainCard:last-child {
+  border-right: 0;
+}
+.captainCard > span {
+  position: absolute;
+  right: 10px;
+  top: -32px;
+  color: #ffffff0d;
+  font-size: 210px;
+  line-height: 1;
+  font-weight: 950;
+}
+.captainCard > div {
+  position: relative;
+  z-index: 1;
+}
+.captainCard small {
+  color: var(--cyan);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .16em;
+}
+.captainCard h3 {
+  font-size: 36px;
+  margin: 7px 0 12px;
+}
+.captainCard p {
+  color: #9eabba;
+  font-size: 13px;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 250px;
+}
+.captainStandard {
+  display: grid;
+  grid-template-columns: 1.35fr repeat(4, 1fr);
+  margin-top: 24px;
+  border-top: 1px solid #ffffff24;
+  border-left: 1px solid #ffffff24;
+}
+.captainStandard > * {
+  min-height: 250px;
+  padding: 25px;
+  border-right: 1px solid #ffffff24;
+  border-bottom: 1px solid #ffffff24;
+}
+.standardIntro {
+  background: var(--blue);
+}
+.standardIntro .eyebrow {
+  color: white;
+}
+.standardIntro h3 {
+  font-size: 31px;
+  line-height: 1.05;
+  margin: 45px 0 0;
+}
+.captainStandard article > span {
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .15em;
+}
+.captainStandard h4 {
+  font-size: 19px;
+  margin: 42px 0 13px;
+}
+.captainStandard article p {
+  color: #9eabba;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
 }
 .identity {
   background: #edf2f7;
@@ -717,7 +849,8 @@ footer {
   .watch,
   .identity,
   .location,
-  .calendarSection {
+  .calendarSection,
+  .captains {
     padding: 72px 0;
   }
   .title {
@@ -728,6 +861,29 @@ footer {
   }
   .teams {
     grid-template-columns: 1fr;
+  }
+  .captainCards {
+    grid-template-columns: 1fr;
+  }
+  .captainCard {
+    min-height: 210px;
+    border-right: 0;
+    border-bottom: 1px solid #ffffff24;
+  }
+  .captainCard:last-child {
+    border-bottom: 0;
+  }
+  .captainStandard {
+    grid-template-columns: 1fr;
+  }
+  .captainStandard > * {
+    min-height: auto;
+  }
+  .standardIntro h3 {
+    margin-top: 24px;
+  }
+  .captainStandard h4 {
+    margin-top: 22px;
   }
   .team {
     min-height: 290px;

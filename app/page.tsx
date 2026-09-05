@@ -19,7 +19,7 @@ const leagues = [
   ],
 ];
 type Team = "U17" | "U16" | "Both";
-type CalEvent = { start: string; end: string; title: string; location: string; team: Team; kind: "Game" | "Training" };
+type CalEvent = { start: string; end: string; title: string; location: string; team: Team; kind: "Game" | "Training"; details?: string };
 const feeds = [
   ["U17" as const, "https://ical-cdn.teamsnap.com/team_schedule/b166e5d6-8fc7-4dee-be9a-57bc0de9f2ce.ics"],
   ["U16" as const, "https://ical-cdn.teamsnap.com/team_schedule/caff0e39-1b73-4578-97b0-356e66824af4.ics"],
@@ -32,6 +32,14 @@ const classicFallback:CalEvent[] = [
   {start:"20261011T100000",end:"20261011T120000",title:"Classic League • vs Coppell FC 2010/11B Stricker Red",location:"Richland College",team:"U17",kind:"Game"},
 ];
 function field(block:string,key:string){const line=block.split("\n").find(x=>x.startsWith(key));return line?.slice(line.indexOf(":")+1).replace(/\\,/g,",").replace(/\\n/g,", ")||""}
+function details(block:string){
+  const value=field(block,"DESCRIPTION")
+    .replace(/\[gotsport:[^\]]+\]/gi,"")
+    .replace(/,\s*,/g,",")
+    .replace(/\s+,/g,",")
+    .trim();
+  return value;
+}
 function shortTitle(s:string){
   return s.replace(/^Sting N1 B2009\/10 Barber \(U17\)\s*/,"").replace(/^Sting ECNL RL NTX B2010\/11 Brave Barber \(U16\)\s*/,"").replace(/^[- ]+/,"").replace(/Classic League\s*/,"Classic League • ");
 }
@@ -39,7 +47,7 @@ function parseIcs(raw:string,team:Team):CalEvent[]{
   const text=raw.replace(/\r?\n[ \t]/g,"");
   return [...text.matchAll(/BEGIN:VEVENT([\s\S]*?)END:VEVENT/g)].map(m=>{
     const title=field(m[1],"SUMMARY");
-    return {start:field(m[1],"DTSTART"),end:field(m[1],"DTEND"),title:shortTitle(title),location:field(m[1],"LOCATION"),team,kind:/Training/i.test(title)?"Training":"Game"};
+    return {start:field(m[1],"DTSTART"),end:field(m[1],"DTEND"),title:shortTitle(title),location:field(m[1],"LOCATION"),details:details(m[1]),team,kind:/Training/i.test(title)?"Training":"Game"};
   }).filter(e=>e.start && !/CANCELED/i.test(e.title));
 }
 function opponentWords(title:string){const stop=new Set(["sting","classic","league","ecnl","ntx","boys","barber","friendly","team","game","red","blue","white","youth"]);return new Set(title.toLowerCase().match(/[a-z]{4,}/g)?.filter(x=>!stop.has(x))||[])}
@@ -74,11 +82,21 @@ export default async function Home() {
             </span>
           </a>
           <div className="navlinks">
-            <a href="#teams">Teams</a>
-            <a href="#captains">Leadership</a>
-            <a href="#identity">Our Club</a>
-            <a href="#calendar">Calendar</a><a href="#media">Media</a>
-            <a href="#location">Home Field</a>
+            <a href="#calendar">Calendar</a>
+            <a href="#captains">Captains</a>
+            <a href="#players">Players</a>
+            <a href="#leadership">Coaches</a>
+            <a href="#partners">Partners</a>
+            <details className="navMore">
+              <summary>More <span aria-hidden>⌄</span></summary>
+              <div className="navMenu">
+                <a href="#teams"><b>Teams</b><small>U17 & U16 pathways</small></a>
+                <a href="#schedule"><b>Match Center</b><small>League schedules & standings</small></a>
+                <a href="#media"><b>Media</b><small>Photos, video & social</small></a>
+                <a href="#location"><b>Home Field</b><small>Training location & map</small></a>
+                <a href="#resources"><b>Resources</b><small>Player and club links</small></a>
+              </div>
+            </details>
           </div>
           <div className="navActions">
             <a className="playerLogin" href="https://stingsoccer.fctrclubmgmt.com/" target="_blank" rel="noreferrer">Player login</a>
@@ -91,7 +109,7 @@ export default async function Home() {
           <div className="heroPhoto">
             <img
               className="heroTeamPhoto"
-              src="/msu-preseason-camp-team.webp"
+              src="/msu-preseason-camp-team.png"
               alt="Sting Trophy Club U17 and U16 boys with Coach Meachum at Midwestern State University preseason camp"
             />
             <div className="heroPhotoShade" />
@@ -154,34 +172,10 @@ export default async function Home() {
           />
         </div>
       </section>
-      <section className="captains" id="captains">
-        <div className="shell">
-          <Title
-            kicker="TEAM LEADERSHIP"
-            title="The armband means something."
-            copy="Selected by their teammates and coaches, our captains are responsible for representing the Sting standard—in training, on matchday and away from the field."
-            light
-          />
-          <div className="captainTeams">
-            <CaptainTeam age="U17" names={["Evan", "Kyan", "Zach"]} />
-            <CaptainTeam age="U16" names={["Sawyer", "Logan", "Isaac"]} alt />
-          </div>
-          <div className="captainStandard">
-            <div className="standardIntro">
-              <p className="eyebrow">THE CAPTAIN STANDARD</p>
-              <h3>Not a reward.<br/>A responsibility.</h3>
-            </div>
-            <Standard number="01" title="With teammates" copy="Put the team first. Include people, encourage teammates when things get difficult and respond to mistakes with solutions—not blame." />
-            <Standard number="02" title="With coaches" copy="Be coachable, communicate honestly and respectfully, reset quickly and reinforce the standards asked of the group." />
-            <Standard number="03" title="At training" copy="Arrive ready to work. Bring energy, intensity and purpose. Lead through your habits before asking anyone to follow your words." />
-            <Standard number="04" title="On matchday" copy="Stay composed, compete for the full 90 and help the team remain connected through both momentum and adversity." />
-          </div>
-        </div>
-      </section>
       <section className="identity" id="identity">
         <div className="shell identityGrid">
           <div className="clubGraphic">
-            <img src="/sting-north-texas-club.webp" alt="Sting North Texas home, away and goalkeeper kits" />
+            <img src="/sting-north-texas-club.png" alt="Sting North Texas home, away and goalkeeper kits" />
             <b>PRIDE & TRADITION • SINCE 1973</b>
           </div>
           <div>
@@ -288,9 +282,29 @@ export default async function Home() {
           </div>
           <div className="reeVisual">
             <img className="reeMark" src="/reeplayer-mark.png" alt="" />
-            <img className="reeCamera" src="/reeplayer-camera.webp" alt="Red Reeplayer AI soccer camera" />
+            <img className="reeCamera" src="/reeplayer-camera.png" alt="Red Reeplayer AI soccer camera" />
             <span>AI-POWERED MATCH VIDEO</span>
           </div>
+        </div>
+      </section>
+      <section className="peopleSection" id="captains">
+        <div className="shell">
+          <Title kicker="TEAM CAPTAINS" title="Leading the Sting way." copy="Meet the players trusted to set the standard, connect the group and lead both teams." />
+          <div className="captainGrid">
+            <article><span>U17</span><h3>Evan</h3><small>CAPTAIN</small></article>
+            <article><span>U17</span><h3>Kyan</h3><small>CAPTAIN</small></article>
+            <article><span>U17</span><h3>Zach</h3><small>CAPTAIN</small></article>
+            <article className="u16 captainPhoto"><img src="/captains/sawyer.jpg" alt="Sawyer, U16 Sting captain" /><span>U16</span><h3>Sawyer</h3><small>CAPTAIN</small></article>
+            <article className="u16 captainPhoto"><img src="/captains/logan.jpg" alt="Logan, U16 Sting captain" /><span>U16</span><h3>Logan</h3><small>CAPTAIN</small></article>
+            <article className="u16 captainPhoto"><img src="/captains/isaac.jpg" alt="Isaac, U16 Sting captain" /><span>U16</span><h3>Isaac</h3><small>CAPTAIN</small></article>
+          </div>
+        </div>
+      </section>
+      <section className="playerProfiles section shell" id="players">
+        <Title kicker="PLAYER PROFILES" title="Meet the boys." copy="A growing home for player photos, positions, numbers, highlights and individual Reeplayer clips." />
+        <div className="profileTeams">
+          <article><span>17</span><div><small>U17 BOYS</small><h3>Player profiles coming soon</h3><p>Roster, numbers, positions and player spotlights will live here.</p></div></article>
+          <article className="alt"><span>16</span><div><small>U16 BOYS</small><h3>Player profiles coming soon</h3><p>Roster, numbers, positions and player spotlights will live here.</p></div></article>
         </div>
       </section>
       <section className="location" id="location">
@@ -318,24 +332,24 @@ export default async function Home() {
               Get directions <Arrow />
             </a>
           </div>
-          <a className="fieldMap" href="/trophy-club-field-map.webp" target="_blank" rel="noreferrer">
-            <img src="/trophy-club-field-map.webp" alt="Trophy Club field map and facility rules, with Sting Trophy Club training on Fields 1 and 2"/>
+          <a className="fieldMap" href="/trophy-club-field-map.png" target="_blank" rel="noreferrer">
+            <img src="/trophy-club-field-map.png" alt="Trophy Club field map and facility rules, with Sting Trophy Club training on Fields 1 and 2"/>
             <span>Open full field map <Arrow /></span>
           </a>
         </div>
       </section>
-      <section className="leadership section shell" id="staff">
+      <section className="leadership section shell" id="leadership">
         <Title kicker="TEAM LEADERSHIP" title="The people behind the teams." copy="A home for coach bios, team-manager contacts and the volunteers who keep both teams moving." />
         <div className="coachGrid">
           <article className="coachCard hasPhoto jonPhoto"><img src="/coach-jon-barber.png" alt="Coach Jon Barber"/><div><small>U17 HEAD COACH • U16 ASSISTANT</small><h3>Coach Jon Barber</h3><p>Coach bio, playing philosophy and contact details coming soon.</p></div></article>
-          <article className="coachCard alt hasPhoto"><img src="/coach-wayne-smith.webp" alt="Coach Wayne Smith"/><div><small>U16 HEAD COACH</small><h3>Coach Wayne Smith</h3><p>Coach bio, playing philosophy and contact details coming soon.</p></div></article>
+          <article className="coachCard alt hasPhoto"><img src="/coach-wayne-smith.png" alt="Coach Wayne Smith"/><div><small>U16 HEAD COACH</small><h3>Coach Wayne Smith</h3><p>Coach bio, playing philosophy and contact details coming soon.</p></div></article>
         </div>
         <div className="teamSupport">
           <article><b>TEAM MANAGERS</b><p>Manager names, responsibilities and best contact routes can live here.</p><span>SECTION RESERVED</span></article>
           <article><b>FUNDRAISING</b><p>Current campaigns, deadlines, progress and supporter links can live here.</p><span>SECTION RESERVED</span></article>
         </div>
       </section>
-      <section className="equipmentPartner">
+      <section className="equipmentPartner" id="partners">
         <div className="shell partnerGrid">
           <div className="partnerLogo"><img src="/soccer-innovations.png" alt="Soccer Innovations, 20 years in business" /></div>
           <div>
@@ -346,7 +360,7 @@ export default async function Home() {
           </div>
         </div>
       </section>
-      <section className="resourceHub">
+      <section className="resourceHub" id="resources">
         <div className="shell">
           <Title kicker="TEAM RESOURCES" title="Your Sting one-stop shop." copy="The most-used club, team and player links in one dependable place." light />
           <div className="resourceGrid">
@@ -435,56 +449,6 @@ function Team({
           <small key={x}>• {x}</small>
         ))}
       </div>
-    </article>
-  );
-}
-function CaptainTeam({
-  age,
-  names,
-  alt = false,
-}: {
-  age: string;
-  names: string[];
-  alt?: boolean;
-}) {
-  return (
-    <div className={"captainTeam " + (alt ? "alt" : "")}>
-      <div className="captainTeamHead">
-        <span>{age}</span>
-        <div>
-          <small>2026/27</small>
-          <b>TEAM CAPTAINS</b>
-        </div>
-      </div>
-      <div className="captainCards">
-        {names.map((name) => (
-          <article className="captainCard" key={name}>
-            <span aria-hidden>{name.slice(0, 1)}</span>
-            <div>
-              <small>{age} CAPTAIN</small>
-              <h3>{name}</h3>
-              <p>Player profile, position and personal leadership commitment coming soon.</p>
-            </div>
-          </article>
-        ))}
-      </div>
-    </div>
-  );
-}
-function Standard({
-  number,
-  title,
-  copy,
-}: {
-  number: string;
-  title: string;
-  copy: string;
-}) {
-  return (
-    <article>
-      <span>{number}</span>
-      <h4>{title}</h4>
-      <p>{copy}</p>
     </article>
   );
 }

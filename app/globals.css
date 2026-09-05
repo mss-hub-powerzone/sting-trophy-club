@@ -66,12 +66,27 @@ nav {
 }
 .navlinks {
   display: flex;
+  align-items: center;
   gap: 24px;
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-weight: 800;
 }
+.navlinks > a,
+.navMore > summary { padding: 29px 0 27px; border-bottom: 2px solid transparent; }
+.navlinks > a:hover,
+.navlinks > a:focus-visible,
+.navMore > summary:hover { color:var(--cyan); border-bottom-color:var(--cyan); }
+.navMore { position:relative; }
+.navMore summary { list-style:none; cursor:pointer; }
+.navMore summary::-webkit-details-marker { display:none; }
+.navMore summary span { color:var(--cyan); margin-left:3px; }
+.navMenu { position:absolute; top:59px; right:0; width:280px; padding:10px; background:#0d1520; border:1px solid #ffffff20; box-shadow:0 22px 55px #0009; }
+.navMenu a { display:flex; flex-direction:column; gap:4px; padding:13px 14px; border-left:2px solid transparent; }
+.navMenu a:hover,.navMenu a:focus-visible { background:#ffffff0b; border-left-color:var(--cyan); }
+.navMenu b { font-size:12px; letter-spacing:.12em; }
+.navMenu small { color:#9ca9b9; font-size:11px; letter-spacing:0; text-transform:none; font-weight:500; }
 .navcta {
   border: 1px solid #ffffff50;
   padding: 12px 16px;
@@ -82,6 +97,27 @@ nav {
 }
 .navActions { display:flex; align-items:center; gap:12px; }
 .playerLogin { color:var(--cyan); font-size:12px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }
+.peopleSection { padding:100px 0; background:#edf3f8; }
+.captainGrid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.captainGrid article { min-height:210px; background:var(--ink); color:white; padding:26px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:flex-end; }
+.captainGrid article.u16 { background:var(--blue); }
+.captainGrid article.captainPhoto { min-height:430px; isolation:isolate; }
+.captainGrid article.captainPhoto::after { content:""; position:absolute; inset:38% 0 0; z-index:-1; background:linear-gradient(180deg,transparent 0%,rgba(5,15,31,.78) 60%,rgba(5,15,31,.96) 100%); }
+.captainGrid .captainPhoto img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 24%; z-index:-2; }
+.captainGrid article > span { position:absolute; right:14px; top:-24px; font-size:94px; font-weight:950; letter-spacing:-.08em; color:#ffffff12; }
+.captainGrid article.captainPhoto > span { top:12px; color:#ffffff32; text-shadow:0 2px 16px #07162a80; }
+.captainGrid h3 { font-size:30px; margin:0 0 4px; }
+.captainGrid small { color:var(--cyan); font-size:11px; letter-spacing:.18em; font-weight:900; }
+.captainGrid .u16 small { color:white; }
+.profileTeams { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.profileTeams article { background:var(--ink); color:white; padding:34px; min-height:270px; display:flex; align-items:flex-end; gap:25px; }
+.profileTeams article.alt { background:var(--blue); }
+.profileTeams article > span { font-size:96px; line-height:.8; color:#ffffff18; font-weight:950; letter-spacing:-.08em; }
+.profileTeams small { color:var(--cyan); font-size:11px; letter-spacing:.16em; font-weight:900; }
+.profileTeams .alt small { color:white; }
+.profileTeams h3 { margin:8px 0 10px; font-size:25px; }
+.profileTeams p { margin:0; color:#aeb9c7; font-size:15px; line-height:1.5; }
+.profileTeams .alt p { color:#e3f2ff; }
 .hero {
   background: var(--ink);
   color: white;
@@ -280,138 +316,6 @@ h1 em {
 .team.alt small {
   color: #d9efff;
 }
-.captains {
-  background: #0b1421;
-  color: white;
-  padding: 100px 0;
-  overflow: hidden;
-}
-.captainTeams {
-  display: grid;
-  gap: 24px;
-}
-.captainTeam {
-  border: 1px solid #ffffff24;
-  background: #111d2c;
-}
-.captainTeam.alt {
-  background: #092a52;
-}
-.captainTeamHead {
-  display: flex;
-  align-items: center;
-  gap: 22px;
-  padding: 22px 26px;
-  border-bottom: 1px solid #ffffff24;
-}
-.captainTeamHead > span {
-  color: var(--cyan);
-  font-size: 40px;
-  line-height: 1;
-  font-weight: 950;
-  letter-spacing: -.05em;
-}
-.captainTeamHead > div {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.captainTeamHead small {
-  color: #91a1b4;
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: .18em;
-}
-.captainTeamHead b {
-  font-size: 12px;
-  letter-spacing: .16em;
-}
-.captainCards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
-.captainCard {
-  min-height: 245px;
-  padding: 28px;
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-  border-right: 1px solid #ffffff24;
-}
-.captainCard:last-child {
-  border-right: 0;
-}
-.captainCard > span {
-  position: absolute;
-  right: 10px;
-  top: -32px;
-  color: #ffffff0d;
-  font-size: 210px;
-  line-height: 1;
-  font-weight: 950;
-}
-.captainCard > div {
-  position: relative;
-  z-index: 1;
-}
-.captainCard small {
-  color: var(--cyan);
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: .16em;
-}
-.captainCard h3 {
-  font-size: 36px;
-  margin: 7px 0 12px;
-}
-.captainCard p {
-  color: #9eabba;
-  font-size: 13px;
-  line-height: 1.55;
-  margin: 0;
-  max-width: 250px;
-}
-.captainStandard {
-  display: grid;
-  grid-template-columns: 1.35fr repeat(4, 1fr);
-  margin-top: 24px;
-  border-top: 1px solid #ffffff24;
-  border-left: 1px solid #ffffff24;
-}
-.captainStandard > * {
-  min-height: 250px;
-  padding: 25px;
-  border-right: 1px solid #ffffff24;
-  border-bottom: 1px solid #ffffff24;
-}
-.standardIntro {
-  background: var(--blue);
-}
-.standardIntro .eyebrow {
-  color: white;
-}
-.standardIntro h3 {
-  font-size: 31px;
-  line-height: 1.05;
-  margin: 45px 0 0;
-}
-.captainStandard article > span {
-  color: var(--cyan);
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: .15em;
-}
-.captainStandard h4 {
-  font-size: 19px;
-  margin: 42px 0 13px;
-}
-.captainStandard article p {
-  color: #9eabba;
-  font-size: 13px;
-  line-height: 1.6;
-  margin: 0;
-}
 .identity {
   background: #edf2f7;
   padding: 100px 0;
@@ -541,6 +445,8 @@ h1 em {
 .calendarToolbar > div { display:flex; align-items:center; gap:12px; }
 .calendarToolbar h3 { margin:0; min-width:220px; text-align:center; font-size:27px; }
 .calendarToolbar button { border:1px solid #cad3dc; background:white; height:36px; padding:0 13px; font-weight:800; cursor:pointer; }
+.calendarToolbar .todayButton { color:var(--blue); }
+.calendarToolbar .printButton { margin-left:10px; background:var(--blue); border-color:var(--blue); color:white; }
 .viewToggle { gap:0 !important; }
 .viewToggle button.active { background:var(--ink); color:white; border-color:var(--ink); }
 .monthGrid { display:grid; grid-template-columns:repeat(7,1fr); border-top:1px solid #cad3dc; border-left:1px solid #cad3dc; background:white; }
@@ -549,7 +455,8 @@ h1 em {
 .dayCell.empty { background:#eef2f5; }
 .dayCell > b { font-size:15px; color:#566271; }
 .dayCell > div { margin-top:7px; display:flex; flex-direction:column; gap:5px; }
-.eventPill { padding:6px; background:#e8edf2; border-left:3px solid #8f9aaa; overflow:hidden; }
+.eventPill { width:100%; padding:6px; background:#e8edf2; border:0; border-left:3px solid #8f9aaa; overflow:hidden; text-align:left; color:inherit; font:inherit; cursor:pointer; }
+.eventPill:hover,.eventPill:focus-visible { box-shadow:0 0 0 2px var(--blue); outline:none; }
 .eventPill.n1 { background:#f5ead8; border-color:#d5b477; }
 .eventPill.ecnl { background:#d8eff0; border-color:#69b6bc; }
 .eventPill.classic { background:#f6dfdf; border-color:#c93131; }
@@ -623,6 +530,26 @@ h1 em {
 }
 .subscribe > div:first-child { display: flex; flex-direction: column; gap: 6px; }
 .subscribe small { color: var(--muted); }
+.printBook { display:none; }
+.eventModalBackdrop { position:fixed; inset:0; z-index:50; background:#05080dcc; display:grid; place-items:center; padding:20px; }
+.eventModal { width:min(600px,100%); background:white; padding:34px; box-shadow:0 30px 90px #0008; position:relative; }
+.modalClose { position:absolute; right:16px; top:12px; border:0; background:transparent; font-size:34px; line-height:1; cursor:pointer; color:#536170; }
+.eventModal h3 { font-size:30px; line-height:1.1; margin:18px 35px 24px 0; }
+.eventModal dl { margin:0; border-top:1px solid #d7dee6; }
+.eventModal dl div { display:grid; grid-template-columns:90px 1fr; gap:18px; border-bottom:1px solid #d7dee6; padding:13px 0; }
+.eventModal dt { color:#6b7785; font-size:11px; font-weight:900; letter-spacing:.1em; text-transform:uppercase; }
+.eventModal dd { margin:0; font-size:15px; font-weight:700; }
+.eventNotes { margin-top:20px; padding:15px 17px; background:#f2f5f8; border-left:4px solid var(--blue); }
+.eventNotes > b { font-size:11px; letter-spacing:.09em; text-transform:uppercase; }
+.eventNotes p { margin:8px 0 0; color:#384655; line-height:1.55; white-space:pre-line; }
+.modalActions { display:flex; gap:10px; flex-wrap:wrap; margin-top:25px; }
+.modalActions button { border:0; cursor:pointer; }
+@media (max-width: 680px) {
+  .eventModalBackdrop { place-items:end center; padding:0; }
+  .eventModal { width:100%; max-height:88vh; overflow:auto; padding:30px 20px calc(20px + env(safe-area-inset-bottom)); border-radius:14px 14px 0 0; }
+  .eventModal h3 { font-size:24px; }
+  .eventModal dl div { grid-template-columns:72px 1fr; }
+}
 .btn.dark { background: var(--ink); color: white; }
 .socials {
   display: flex;
@@ -634,6 +561,37 @@ h1 em {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-weight: 900;
+}
+@media print {
+  @page { size:letter landscape; margin:.25in; }
+  html,body,main { margin:0; padding:0; background:white; }
+  main > * { display:none !important; }
+  main > .calendarSection { display:block !important; padding:0; background:white; }
+  .calendarSection > .shell { width:100%; max-width:none; margin:0; }
+  .calendarSection > .shell > .title { display:none !important; }
+  .calendarApp > * { display:none !important; }
+  .calendarApp > .printBook { display:block !important; }
+  .printMonth { height:7.55in; max-height:7.55in; overflow:hidden; break-after:page; page-break-after:always; display:flex; flex-direction:column; }
+  .printMonth:last-child { break-after:auto; page-break-after:auto; }
+  .printMonthHeader { height:.68in; display:flex !important; position:static; align-items:center; gap:10px; color:var(--ink); background:white; border-bottom:2px solid var(--blue); flex:0 0 auto; }
+  .printMonthHeader img { width:37px; height:45px; object-fit:contain; }
+  .printMonthHeader b { font-size:9px; letter-spacing:.14em; }
+  .printMonthHeader h2 { font-size:21px; line-height:1; margin:2px 0; }
+  .printMonthHeader span { font-size:7px; color:#566271; letter-spacing:.08em; }
+  .printMonthGrid { display:grid; grid-template-columns:repeat(7,1fr); grid-template-rows:.28in repeat(6,1fr); border-left:1px solid #aeb8c3; flex:1; min-height:0; }
+  .printDayName { display:grid; place-items:center; background:var(--ink); color:white; border-right:1px solid #3c4653; font-size:8px; font-weight:900; letter-spacing:.1em; text-transform:uppercase; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+  .printDay { min-height:0; overflow:hidden; padding:3px; border-right:1px solid #aeb8c3; border-bottom:1px solid #aeb8c3; }
+  .printDay.empty { background:#eef2f5; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+  .printDay > strong { display:block; font-size:9px; color:#46515e; line-height:1; margin-bottom:2px; }
+  .printEvent { padding:3px; margin-top:2px; border-left:2px solid #8f9aaa; background:#e8edf2; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+  .printEvent.n1 { background:#f5ead8; border-color:#d5b477; }
+  .printEvent.ecnl { background:#d8eff0; border-color:#69b6bc; }
+  .printEvent.classic { background:#f6dfdf; border-color:#c93131; }
+  .printEvent.friendly { background:#e4ecff; border-color:var(--blue); }
+  .printEvent b,.printEvent span,.printEvent small { display:block; overflow:hidden; text-overflow:ellipsis; }
+  .printEvent b { font-size:6.5px; line-height:1.1; }
+  .printEvent span { font-size:7.5px; line-height:1.12; font-weight:700; max-height:18px; }
+  .printEvent small { font-size:6px; line-height:1.1; color:#566271; white-space:nowrap; }
 }
 .media {
   display: grid;
@@ -817,15 +775,26 @@ footer {
 }
 @media (max-width: 800px) {
   nav {
-    height: 68px;
+    min-height: 68px;
+    flex-wrap:wrap;
+    padding-top:8px;
   }
   .navlinks {
-    display: none;
+    display:flex;
+    order:3;
+    width:100%;
+    overflow-x:auto;
+    gap:22px;
+    scrollbar-width:none;
   }
+  .navlinks::-webkit-scrollbar { display:none; }
+  .navlinks > a,.navMore > summary { white-space:nowrap; padding:13px 0 12px; }
+  .navMore { display:none; }
   .navcta {
     padding: 10px;
   }
   .playerLogin { display:none; }
+  .navActions { margin-left:auto; }
   .hero {
     padding: 55px 0;
   }
@@ -849,8 +818,7 @@ footer {
   .watch,
   .identity,
   .location,
-  .calendarSection,
-  .captains {
+  .calendarSection {
     padding: 72px 0;
   }
   .title {
@@ -861,29 +829,6 @@ footer {
   }
   .teams {
     grid-template-columns: 1fr;
-  }
-  .captainCards {
-    grid-template-columns: 1fr;
-  }
-  .captainCard {
-    min-height: 210px;
-    border-right: 0;
-    border-bottom: 1px solid #ffffff24;
-  }
-  .captainCard:last-child {
-    border-bottom: 0;
-  }
-  .captainStandard {
-    grid-template-columns: 1fr;
-  }
-  .captainStandard > * {
-    min-height: auto;
-  }
-  .standardIntro h3 {
-    margin-top: 24px;
-  }
-  .captainStandard h4 {
-    margin-top: 22px;
   }
   .team {
     min-height: 290px;
@@ -927,6 +872,8 @@ footer {
   .reeVisual { min-height:360px; }
   .reeCamera { width:120%; }
   .coachGrid,.teamSupport,.resourceGrid { grid-template-columns:1fr; }
+  .captainGrid { grid-template-columns:repeat(2,1fr); }
+  .profileTeams { grid-template-columns:1fr; }
   .partnerGrid { grid-template-columns:1fr; gap:40px; }
   .partnerLogo { min-height:220px; padding:30px; }
   .coachCard { min-height:230px; padding:26px; }

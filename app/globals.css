@@ -104,6 +104,8 @@ nav {
 .captainGrid article.captainPhoto { min-height:430px; isolation:isolate; }
 .captainGrid article.captainPhoto::after { content:""; position:absolute; inset:38% 0 0; z-index:-1; background:linear-gradient(180deg,transparent 0%,rgba(5,15,31,.78) 60%,rgba(5,15,31,.96) 100%); }
 .captainGrid .captainPhoto img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 24%; z-index:-2; }
+.captainGrid article.kyanPhoto { background:linear-gradient(145deg,#071426 0%,#102d50 58%,#0866b1 100%); }
+.captainGrid .kyanPhoto img { object-fit:contain; object-position:center bottom; padding:18px 0 0; }
 .captainGrid article > span { position:absolute; right:14px; top:-24px; font-size:94px; font-weight:950; letter-spacing:-.08em; color:#ffffff12; }
 .captainGrid article.captainPhoto > span { top:12px; color:#ffffff32; text-shadow:0 2px 16px #07162a80; }
 .captainGrid h3 { font-size:30px; margin:0 0 4px; }

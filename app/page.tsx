@@ -291,7 +291,7 @@ export default async function Home() {
         <div className="shell">
           <Title kicker="TEAM CAPTAINS" title="Leading the Sting way." copy="Meet the players trusted to set the standard, connect the group and lead both teams." />
           <div className="captainGrid">
-            <article><span>U17</span><h3>Evan</h3><small>CAPTAIN</small></article>
+            <article className="captainPhoto"><img src="/captains/evan.jpg" alt="Evan John, U17 Sting captain" /><span>U17</span><h3>Evan</h3><small>CAPTAIN</small></article>
             <article className="captainPhoto kyanPhoto"><img src="/captains/kyan.png" alt="Kyan, U17 Sting captain" /><span>U17</span><h3>Kyan</h3><small>CAPTAIN</small></article>
             <article><span>U17</span><h3>Zach</h3><small>CAPTAIN</small></article>
             <article className="u16 captainPhoto"><img src="/captains/sawyer.jpg" alt="Sawyer, U16 Sting captain" /><span>U16</span><h3>Sawyer</h3><small>CAPTAIN</small></article>

@@ -99,18 +99,20 @@ nav {
 .playerLogin { color:var(--cyan); font-size:12px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }
 .peopleSection { padding:100px 0; background:#edf3f8; }
 .captainGrid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
-.captainGrid article { min-height:210px; background:var(--ink); color:white; padding:26px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:flex-end; }
+.captainGrid article { min-height:210px; background:var(--ink); color:white; position:relative; overflow:hidden; }
 .captainGrid article.u16 { background:var(--blue); }
 .captainGrid article.captainPhoto { min-height:430px; isolation:isolate; }
-.captainGrid article.captainPhoto::after { content:""; position:absolute; inset:38% 0 0; z-index:-1; background:linear-gradient(180deg,transparent 0%,rgba(5,15,31,.78) 60%,rgba(5,15,31,.96) 100%); }
 .captainGrid .captainPhoto img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 24%; z-index:-2; }
 .captainGrid article.kyanPhoto { background:linear-gradient(145deg,#071426 0%,#102d50 58%,#0866b1 100%); }
 .captainGrid .kyanPhoto img { object-fit:contain; object-position:center bottom; padding:18px 0 0; }
 .captainGrid .zachPhoto img { object-position:center 22%; }
-.captainGrid article > span { position:absolute; right:14px; top:-24px; font-size:94px; font-weight:950; letter-spacing:-.08em; color:#ffffff12; }
-.captainGrid article.captainPhoto > span { top:12px; color:#ffffff32; text-shadow:0 2px 16px #07162a80; }
-.captainGrid h3 { font-size:30px; margin:0 0 4px; }
+.captainPlate { position:absolute; left:0; right:0; bottom:0; min-height:94px; display:grid; grid-template-columns:82px 1fr; align-items:stretch; background:rgba(7,11,18,.96); border-top:4px solid white; box-shadow:0 -12px 30px #0008; }
+.captainPlate > span { display:flex; align-items:center; justify-content:center; background:var(--blue); color:white; font-size:25px; line-height:1; font-weight:950; letter-spacing:-.03em; }
+.captainPlate > div { display:flex; flex-direction:column; justify-content:center; padding:14px 18px; border-right:5px solid var(--blue); }
+.captainGrid h3 { font-size:26px; line-height:1; margin:0 0 7px; }
 .captainGrid small { color:var(--cyan); font-size:11px; letter-spacing:.18em; font-weight:900; }
+.captainGrid .u16 .captainPlate > span { background:white; color:var(--ink); }
+.captainGrid .u16 .captainPlate > div { border-right-color:white; }
 .captainGrid .u16 small { color:white; }
 .profileTeams { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
 .profileTeams article { background:var(--ink); color:white; padding:34px; min-height:270px; display:flex; align-items:flex-end; gap:25px; }

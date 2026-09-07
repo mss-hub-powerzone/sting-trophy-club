@@ -109,7 +109,7 @@ export default async function Home() {
           <div className="heroPhoto">
             <img
               className="heroTeamPhoto"
-              src="/msu-preseason-camp-team.png"
+              src="/msu-preseason-camp-team.webp"
               alt="Sting Trophy Club U17 and U16 boys with Coach Meachum at Midwestern State University preseason camp"
             />
             <div className="heroPhotoShade" />
@@ -291,12 +291,12 @@ export default async function Home() {
         <div className="shell">
           <Title kicker="TEAM CAPTAINS" title="Leading the Sting way." copy="Meet the players trusted to set the standard, connect the group and lead both teams." />
           <div className="captainGrid">
-            <article className="captainPhoto"><img src="/captains/evan.jpg" alt="Evan John, U17 Sting captain" /><span>U17</span><h3>Evan</h3><small>CAPTAIN</small></article>
-            <article className="captainPhoto kyanPhoto"><img src="/captains/kyan.png" alt="Kyan, U17 Sting captain" /><span>U17</span><h3>Kyan</h3><small>CAPTAIN</small></article>
-            <article className="captainPhoto zachPhoto"><img src="/captains/zach-morris.jpg" alt="Zach Morris, U17 Sting captain" /><span>U17</span><h3>Zach</h3><small>CAPTAIN</small></article>
-            <article className="u16 captainPhoto"><img src="/captains/sawyer.jpg" alt="Sawyer, U16 Sting captain" /><span>U16</span><h3>Sawyer</h3><small>CAPTAIN</small></article>
-            <article className="u16 captainPhoto"><img src="/captains/logan.jpg" alt="Logan, U16 Sting captain" /><span>U16</span><h3>Logan</h3><small>CAPTAIN</small></article>
-            <article className="u16 captainPhoto"><img src="/captains/isaac.jpg" alt="Isaac, U16 Sting captain" /><span>U16</span><h3>Isaac</h3><small>CAPTAIN</small></article>
+            <article className="captainPhoto"><img src="/captains/evan.jpg" alt="Evan John, U17 Sting captain" /><div className="captainPlate"><span>U17</span><div><h3>Evan John</h3><small>TEAM CAPTAIN</small></div></div></article>
+            <article className="captainPhoto kyanPhoto"><img src="/captains/kyan.jpg" alt="Kyan Barber, U17 Sting captain" /><div className="captainPlate"><span>U17</span><div><h3>Kyan Barber</h3><small>TEAM CAPTAIN</small></div></div></article>
+            <article className="captainPhoto zachPhoto"><img src="/captains/zach-morris.jpg" alt="Zach Morris, U17 Sting captain" /><div className="captainPlate"><span>U17</span><div><h3>Zach Morris</h3><small>TEAM CAPTAIN</small></div></div></article>
+            <article className="u16 captainPhoto"><img src="/captains/sawyer.jpg" alt="Sawyer, U16 Sting captain" /><div className="captainPlate"><span>U16</span><div><h3>Sawyer</h3><small>TEAM CAPTAIN</small></div></div></article>
+            <article className="u16 captainPhoto"><img src="/captains/logan.jpg" alt="Logan Cano, U16 Sting captain" /><div className="captainPlate"><span>U16</span><div><h3>Logan Cano</h3><small>TEAM CAPTAIN</small></div></div></article>
+            <article className="u16 captainPhoto"><img src="/captains/isaac.jpg" alt="Isaac, U16 Sting captain" /><div className="captainPlate"><span>U16</span><div><h3>Isaac</h3><small>TEAM CAPTAIN</small></div></div></article>
           </div>
         </div>
       </section>

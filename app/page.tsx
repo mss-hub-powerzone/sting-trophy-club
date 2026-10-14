@@ -341,7 +341,7 @@ export default async function Home() {
       <section className="leadership section shell" id="leadership">
         <Title kicker="TEAM LEADERSHIP" title="The people behind the teams." copy="A home for coach bios, team-manager contacts and the volunteers who keep both teams moving." />
         <div className="coachGrid">
-          <article className="coachCard hasPhoto jonPhoto"><img src="/coach-jon-barber.png" alt="Coach Jon Barber"/><div><small>U17 HEAD COACH • U16 ASSISTANT</small><h3>Coach Jon Barber</h3><p>Coach bio, playing philosophy and contact details coming soon.</p></div></article>
+          <article className="coachCard hasPhoto jonPhoto"><img src="/coach-jon-barber-headshot.webp" alt="Coach Jon Barber"/><div><small>U17 HEAD COACH • U16 ASSISTANT</small><h3>Coach Jon Barber</h3><p>Coach bio, playing philosophy and contact details coming soon.</p></div></article>
           <article className="coachCard alt hasPhoto"><img src="/coach-wayne-smith.webp" alt="Coach Wayne Smith"/><div><small>U16 HEAD COACH</small><h3>Coach Wayne Smith</h3><p>Coach bio, playing philosophy and contact details coming soon.</p></div></article>
         </div>
         <div className="teamSupport">

@@ -364,7 +364,7 @@ export default async function Home() {
         <div className="shell">
           <Title kicker="TEAM RESOURCES" title="Your Sting one-stop shop." copy="The most-used club, team and player links in one dependable place." light />
           <div className="resourceGrid">
-            <a href="https://sting-trophy-club-fall-2026.joncbarber.chatgpt.site/#workspace" target="_blank" rel="noopener noreferrer" style={{ gridColumn: "1 / -1", minHeight: 170, background: "#0c3157" }}><span>FALL 2026 · U16 + U17</span><b style={{ margin: "16px 0 10px" }}>Fall 2026 Tournaments</b><small>November–December plans, event commitments and family registration</small><i><Arrow/></i></a>
+            <a href="/tournaments#workspace" style={{ gridColumn: "1 / -1", minHeight: 170, background: "#0c3157" }}><span>FALL 2026 · U16 + U17</span><b style={{ margin: "16px 0 10px" }}>Fall 2026 Tournaments</b><small>November–December plans, event commitments and family registration</small><i><Arrow/></i></a>
             <a href="https://stingsoccer.fctrclubmgmt.com/" target="_blank" rel="noreferrer"><span>01</span><b>Player Account</b><small>Registration, club information and player access</small><i><Arrow/></i></a>
             <a href="https://apps.apple.com/us/app/sting-sc/id6787877255" target="_blank" rel="noreferrer"><span>02</span><b>Sting SC App</b><small>Download for iPhone and iPad on the App Store</small><i><Arrow/></i></a>
             <a href="https://tinyurl.com/StingTrophyClub" target="_blank" rel="noreferrer"><span>03</span><b>Join U16/U17</b><small>Interest form for the Trophy Club boys teams</small><i><Arrow/></i></a>

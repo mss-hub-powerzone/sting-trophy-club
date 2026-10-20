@@ -1,6 +1,7 @@
 import vinext from "vinext";
 import { defineConfig } from "vite";
 import hostingConfig from "./.openai/hosting.json";
+import tournaments from "./tournaments.config.json";
 import { sites } from "./build/sites-vite-plugin";
 
 const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
@@ -14,7 +15,9 @@ const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 const localBindingConfig = {
   main: "./worker/index.ts",
   compatibility_flags: ["nodejs_compat"],
-  d1_databases: d1
+  vars: {TOURNAMENTS_FROM_EMAIL:tournaments.sender},
+  send_email: [{name:"TOURNAMENTS_EMAIL",allowed_sender_addresses:[tournaments.sender]}],
+  d1_databases: [{binding:"TOURNAMENTS_DB",database_name:tournaments.database_name,database_id:tournaments.database_id}, ...(d1
     ? [
         {
           binding: d1,
@@ -22,7 +25,7 @@ const localBindingConfig = {
           database_id: SITE_CREATOR_PLACEHOLDER_DATABASE_ID,
         },
       ]
-    : [],
+    : [])],
   r2_buckets: r2
     ? [
         {
@@ -62,3 +65,4 @@ export default defineConfig(async () => {
     ],
   };
 });
+

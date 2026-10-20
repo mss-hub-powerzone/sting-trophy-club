@@ -20,7 +20,7 @@ const leagues = [
 ];
 type Team = "U17" | "U16" | "Both";
 type CalEvent = { start: string; end: string; title: string; location: string; team: Team; kind: "Game" | "Training"; details?: string };
-const feeds = [
+const feeds:readonly (readonly [Team,string])[] = [
   ["U17" as const, "https://ical-cdn.teamsnap.com/team_schedule/b166e5d6-8fc7-4dee-be9a-57bc0de9f2ce.ics"],
   ["U16" as const, "https://ical-cdn.teamsnap.com/team_schedule/caff0e39-1b73-4578-97b0-356e66824af4.ics"],
 ];
@@ -45,7 +45,7 @@ function shortTitle(s:string){
 }
 function parseIcs(raw:string,team:Team):CalEvent[]{
   const text=raw.replace(/\r?\n[ \t]/g,"");
-  return [...text.matchAll(/BEGIN:VEVENT([\s\S]*?)END:VEVENT/g)].map(m=>{
+  return [...text.matchAll(/BEGIN:VEVENT([\s\S]*?)END:VEVENT/g)].map<CalEvent>(m=>{
     const title=field(m[1],"SUMMARY");
     return {start:field(m[1],"DTSTART"),end:field(m[1],"DTEND"),title:shortTitle(title),location:field(m[1],"LOCATION"),details:details(m[1]),team,kind:/Training/i.test(title)?"Training":"Game"};
   }).filter(e=>e.start && !/CANCELED/i.test(e.title));
@@ -455,3 +455,4 @@ function Team({
 }
 import { calendarData } from "./calendar-data";
 import TeamCalendar from "./team-calendar";
+

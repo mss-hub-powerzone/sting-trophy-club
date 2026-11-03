@@ -16,7 +16,7 @@ test('all event combinations and Central commitment deadline',()=>{
  for(const team of ['u16','u17']){const events=EVENTS.filter(e=>e.prices[team]!==undefined);assert.equal(events.length,3);for(let mask=0;mask<8;mask++){const selected=events.filter((_,i)=>mask&(1<<i));assert.equal(totalFor(team,selected.map(e=>e.id)),selected.reduce((sum,e)=>sum+e.prices[team],0));}}
  assert.equal(totalFor('u16',['premier','lonestar','snowball']),250);assert.equal(totalFor('u17',['premier','lonestar','jago']),260);
  assert.throws(()=>validateSelections('u16',['jago']));assert.throws(()=>validateSelections('u17',['snowball']));assert.throws(()=>validateSelections('u17',['jago','jago']));
- assert.equal(isClosed(Date.parse('2026-11-01T04:59:59Z')),false);assert.equal(isClosed(Date.parse('2026-11-01T05:00:00Z')),true);
+ assert.equal(isClosed(Date.parse('2026-11-04T05:59:59Z')),false);assert.equal(isClosed(Date.parse('2026-11-04T06:00:00Z')),true);
 });
 test('only roster emails receive codes; response does not disclose membership',async()=>{
  const f=fixture();assert.deepEqual(await requestCode({...f,email:'FAMILY@example.com'}),{ok:true});assert.deepEqual(await requestCode({...f,email:'unknown@example.com'}),{ok:true});assert.equal(f.sent.length,1);

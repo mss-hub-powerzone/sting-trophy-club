@@ -39,7 +39,7 @@ const DETAILS = {
 // Content updates do not alter event IDs or per-player team registration prices.
 for (const event of EVENTS) Object.assign(event, DETAILS[event.id]);
 export const TEAM_NAMES={u16:'11 Brave Barber · U16',u17:'10 Barber · U17'};
-export const COMMIT_CLOSE='2026-11-01T05:00:00.000Z';
+export const COMMIT_CLOSE='2026-11-04T06:00:00.000Z';
 export function isClosed(now=Date.now()){return now>=Date.parse(COMMIT_CLOSE);}
 export function validateSelections(team,ids){
  if(!Array.isArray(ids)||ids.length>3||ids.some(id=>typeof id!=='string')||new Set(ids).size!==ids.length)throw new Error('Choose each event only once.');

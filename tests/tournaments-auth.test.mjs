@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
 import {requestCode,verifyCode,session,sessionCookie,COOKIE,digest} from '../app/tournaments/auth-core.mjs';
-import {EVENTS,totalFor,validateSelections,isClosed} from '../app/tournaments/domain.mjs';
+import {EVENTS,totalFor,validateSelections,isClosed,eventIsClosed,validateCommitmentChanges} from '../app/tournaments/domain.mjs';
 function fixture(){
  const sqlite=new DatabaseSync(':memory:');sqlite.exec(readFileSync(new URL('../db/tournaments.sql',import.meta.url),'utf8'));
  const db={prepare(sql){let args=[];const stmt=sqlite.prepare(sql);return {bind(...values){args=values;return this;},async first(){return stmt.get(...args)||null;},async all(){return {results:stmt.all(...args)};},async run(){return {meta:{changes:stmt.run(...args).changes}};}};},async batch(statements){return Promise.all(statements.map(s=>s.run()));}};
@@ -16,7 +16,7 @@ test('all event combinations and Central commitment deadline',()=>{
  for(const team of ['u16','u17']){const events=EVENTS.filter(e=>e.prices[team]!==undefined);assert.equal(events.length,3);for(let mask=0;mask<8;mask++){const selected=events.filter((_,i)=>mask&(1<<i));assert.equal(totalFor(team,selected.map(e=>e.id)),selected.reduce((sum,e)=>sum+e.prices[team],0));}}
  assert.equal(totalFor('u16',['premier','lonestar','snowball']),250);assert.equal(totalFor('u17',['premier','lonestar','jago']),260);
  assert.throws(()=>validateSelections('u16',['jago']));assert.throws(()=>validateSelections('u17',['snowball']));assert.throws(()=>validateSelections('u17',['jago','jago']));
- assert.equal(isClosed(Date.parse('2026-11-04T05:59:59Z')),false);assert.equal(isClosed(Date.parse('2026-11-04T06:00:00Z')),true);
+ assert.equal(isClosed(Date.parse('2026-11-04T05:59:59Z')),false);assert.equal(isClosed(Date.parse('2026-11-04T06:00:00Z')),false);
 });
 test('only roster emails receive codes; response does not disclose membership',async()=>{
  const f=fixture();assert.deepEqual(await requestCode({...f,email:'FAMILY@example.com'}),{ok:true});assert.deepEqual(await requestCode({...f,email:'unknown@example.com'}),{ok:true});assert.equal(f.sent.length,1);
@@ -44,4 +44,19 @@ test('resend cooldown, mail failure cleanup, and staff sessions',async()=>{
 test('request and verification IP limits survive new email addresses',async()=>{
  const f=fixture();for(let i=0;i<20;i++)await requestCode({...f,email:`unknown${i}@example.com`});await requestCode({...f,email:'family@example.com'});assert.equal(f.sent.length,0);
  const g=fixture();await requestCode({...g,email:'family@example.com'});for(let i=0;i<50;i++)await verifyCode({...g,email:'unknown@example.com',code:'00000000'});assert.equal(await verifyCode({...g,email:'family@example.com',code:g.sent[0].code}),null);
+});
+
+test('December extension preserves locked November selections and closes at Central midnight',()=>{
+ const now=Date.parse('2026-11-08T12:00:00Z');
+ assert.equal(eventIsClosed('premier',now),true);
+ for(const id of ['jago','snowball']){
+  assert.equal(eventIsClosed(id,Date.parse('2026-11-15T05:59:59Z')),false);
+  assert.equal(eventIsClosed(id,Date.parse('2026-11-15T06:00:00Z')),true);
+ }
+ validateCommitmentChanges(['premier'],['premier','snowball'],now);
+ validateCommitmentChanges(['lonestar','jago'],['lonestar'],now);
+ assert.throws(()=>validateCommitmentChanges(['premier'],['snowball'],now));
+ assert.throws(()=>validateCommitmentChanges([],['lonestar'],now));
+ assert.equal(isClosed(Date.parse('2026-11-15T06:00:00Z')),true);
+ assert.throws(()=>validateCommitmentChanges([],['snowball'],Date.parse('2026-11-15T06:00:00Z')));
 });

@@ -1,5 +1,5 @@
 import {access,database,getPlayers,sameOrigin,json} from '../../access.server';
-import {isClosed,validateSelections} from '../../domain.mjs';
+import {isClosed,validateSelections,validateCommitmentChanges} from '../../domain.mjs';
 export async function POST(req:Request){
  const raw=await req.text();if(raw.length>16000)return json({error:'Request too large.'},413);
  if(!sameOrigin(req))return json({error:'Refresh this page before saving.'},403);
@@ -11,6 +11,9 @@ export async function POST(req:Request){
  const selections=validateSelections(p.team,b.selections);
  if(!Number.isInteger(b.revision)||b.revision<0)return json({error:'Refresh this page and try again.'},400);
  const db=database(),at=new Date().toISOString();let changed=0;
+ const previous=await db.prepare('SELECT selections,revision FROM registrations WHERE player_id=?').bind(p.id).first<{selections:string;revision:number}>();
+ if((previous?.revision??0)!==b.revision)return json({error:'This commitment changed in another session. Reload to review the latest selections.'},409);
+ if(!a.admin){try{validateCommitmentChanges(previous?JSON.parse(previous.selections):[],selections);}catch(e){return json({error:(e as Error).message},403);}}
  if(b.revision===0){const result=await db.prepare("INSERT INTO registrations (player_id,selections,updated_by,updated_at,revision,paid_cents,payment_note) VALUES (?,?,?,?,1,0,'') ON CONFLICT(player_id) DO NOTHING").bind(p.id,JSON.stringify(selections),a.user.userId,at).run();changed=result.meta.changes;}
  else {const result=await db.prepare('UPDATE registrations SET selections=?,updated_by=?,updated_at=?,revision=revision+1 WHERE player_id=? AND revision=?').bind(JSON.stringify(selections),a.user.userId,at,p.id,b.revision).run();changed=result.meta.changes;}
  if(!changed)return json({error:'This commitment changed in another session. Reload to review the latest selections.'},409);

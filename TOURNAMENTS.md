@@ -15,7 +15,7 @@ Sign-in codes expire after ten minutes and five guesses. Resends have a 60-secon
 
 ## Registration and payments
 
-Commitments close November 3, 2026 at 11:59 p.m. America/Chicago. Payments are due November 7. Managers can adjust commitments after the deadline and maintain hotel and payment records. The site records payments; it does not charge families or publish Snap! Spend invoices. Manager CSV exports show event selections and player balances for invoicing/reconciliation. Prices and allowed team/event combinations are validated on the server.
+November commitments closed November 3, 2026 at 11:59 p.m. America/Chicago. Gordon Jago and Snowball Cup commitments are reopened through November 14, 2026 at 11:59 p.m. America/Chicago. Closed event selections are preserved on family saves. Payments are due November 7. Managers can adjust commitments after the deadline and maintain hotel and payment records. The site records payments; it does not charge families or publish Snap! Spend invoices. Manager CSV exports show event selections and player balances for invoicing/reconciliation. Prices and allowed team/event combinations are validated on the server.
 
 ## Validation
 

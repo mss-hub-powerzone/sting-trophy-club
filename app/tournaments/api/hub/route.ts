@@ -1,5 +1,5 @@
 import {access,database,getPlayers,cleanPlayer,json} from '../../access.server';
-import {EVENTS,isClosed} from '../../domain.mjs';
+import {EVENTS,isClosed,eventIsClosed} from '../../domain.mjs';
 export const dynamic='force-dynamic';
 export async function GET(){
  try{
@@ -13,6 +13,6 @@ export async function GET(){
  const records=visible.length?(await db.prepare(`SELECT * FROM registrations WHERE player_id IN (${visible.map(()=>'?').join(',')})`).bind(...visible.map(p=>p.id)).all()).results:[];
  const hotel=(await db.prepare("SELECT value FROM settings WHERE key='hotel'").first<{value:string}>())?.value;
  const albums=(await db.prepare("SELECT value FROM settings WHERE key='albums'").first<{value:string}>())?.value;
- return json({signedIn:true,allowed:true,admin:a.admin,email:a.user.email,name:a.user.displayName,players:visible.map(cleanPlayer),linkedIds:a.linked.map(p=>p.id),records:records.map((r:any)=>({...r,selections:JSON.parse(r.selections),updated_by:undefined,payment_note:a.admin?r.payment_note:undefined})),counts,albums:albums?JSON.parse(albums):[],closed:isClosed(),hotel:hotel?JSON.parse(hotel):null});
+ return json({signedIn:true,allowed:true,admin:a.admin,email:a.user.email,name:a.user.displayName,players:visible.map(cleanPlayer),linkedIds:a.linked.map(p=>p.id),records:records.map((r:any)=>({...r,selections:JSON.parse(r.selections),updated_by:undefined,payment_note:a.admin?r.payment_note:undefined})),counts,albums:albums?JSON.parse(albums):[],closed:isClosed(),closedEvents:EVENTS.filter(e=>eventIsClosed(e.id)).map(e=>e.id),hotel:hotel?JSON.parse(hotel):null});
  }catch(e){console.error('hub read failed',e);return json({error:'Unable to load registrations. Please try again.'},503);}
 }

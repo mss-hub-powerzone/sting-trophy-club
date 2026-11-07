@@ -40,7 +40,15 @@ const DETAILS = {
 for (const event of EVENTS) Object.assign(event, DETAILS[event.id]);
 export const TEAM_NAMES={u16:'11 Brave Barber · U16',u17:'10 Barber · U17'};
 export const COMMIT_CLOSE='2026-11-04T06:00:00.000Z';
-export function isClosed(now=Date.now()){return now>=Date.parse(COMMIT_CLOSE);}
+export const DECEMBER_COMMIT_CLOSE='2026-11-15T06:00:00.000Z';
+export function eventIsClosed(id,now=Date.now()){
+ return now>=Date.parse(['jago','snowball'].includes(id)?DECEMBER_COMMIT_CLOSE:COMMIT_CLOSE);
+}
+export function isClosed(now=Date.now()){return EVENTS.every(e=>eventIsClosed(e.id,now));}
+export function validateCommitmentChanges(previous,next,now=Date.now()){
+ if(EVENTS.some(e=>eventIsClosed(e.id,now)&&previous.includes(e.id)!==next.includes(e.id)))
+  throw new Error('November commitments are closed. Only open events can be changed.');
+}
 export function validateSelections(team,ids){
  if(!Array.isArray(ids)||ids.length>3||ids.some(id=>typeof id!=='string')||new Set(ids).size!==ids.length)throw new Error('Choose each event only once.');
  if(ids.some(id=>!EVENTS.some(e=>e.id===id&&e.prices[team]!==undefined)))throw new Error('One or more events are unavailable for this team.');

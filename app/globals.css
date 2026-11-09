@@ -898,3 +898,15 @@ footer {
     text-align: center;
   }
 }
+
+/* Field portraits retain the original photos with responsive editorial crops. */
+.coachCard.hasPhoto.jonPhoto { min-height: 400px; }
+.coachCard.hasPhoto.jonPhoto > img { height: auto; width: 150%; max-width: none; left: -38%; top: -98%; object-fit: initial; filter: brightness(1.03) contrast(1.03); }
+.headCoachIntro { display:flex; align-items:center; gap:16px; color:white; text-decoration:none; margin:26px 0; padding:18px 0; border-top:1px solid #ffffff26; border-bottom:1px solid #ffffff26; }
+.headCoachPortrait { position:relative; flex:0 0 86px; height:100px; overflow:hidden; border-radius:4px; background:#173b51; }
+.headCoachPortrait img { position:absolute; width:210px; max-width:none; height:auto; left:-69px; top:-111px; }
+.headCoachIntro small { display:block; color:var(--cyan); font-size:10px; font-weight:900; letter-spacing:.12em; }
+.headCoachIntro strong { display:block; font-size:24px; margin:5px 0; }
+.headCoachIntro > span > span { display:block; color:#aeb9c7; font-size:13px; }
+.headCoachIntro:focus-visible { outline:2px solid var(--cyan); outline-offset:5px; }
+@media(max-width:600px) { .coachCard.hasPhoto.jonPhoto > img { top:-66%; } }

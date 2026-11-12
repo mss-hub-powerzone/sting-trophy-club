@@ -1,16 +1,16 @@
 export const EVENTS = [
- {id:'premier',title:'Fall Premier Cup & Showcase',short:'Fall Premier',dates:'November 13–15',month:'NOV',day:'13–15',start:'2026-11-13',end:'2026-11-15',location:'Dallas area, Texas',venue:'Multiple Dallas-area complexes; team field assignments to follow.',type:'Cup + showcase',prices:{u16:80,u17:80},url:'https://tigertournaments.com/tournaments/fall-premier-cup',notes:'Local event. Allow for possible Friday games. Organizer registration closes November 2.',travel:'Family transportation. Final arrival times follow the match schedule.'},
+ {id:'premier',title:'Dallas Texans Fall Festival',short:'Dallas Texans Fall Festival',dates:'November 20–22',month:'NOV',day:'20–22',start:'2026-11-20',end:'2026-11-22',location:'Plano, Texas',venue:'Plano-area parks; team field assignments to follow.',type:'Tournament',prices:{u16:80,u17:80},url:'https://dallastexans.com/tournaments-camps/dtsc-fall-festival/',notes:'Local event. Allow for possible Friday games. Team entry and acceptance are pending coach confirmation.',travel:'Family transportation. Final arrival times follow the match schedule.'},
  {id:'lonestar',title:'Lonestar Boys College Showcase',short:'Lonestar / Round Rock',dates:'November 28–29',month:'NOV',day:'28–29',start:'2026-11-28',end:'2026-11-29',location:'Round Rock, Texas',venue:'Round Rock Multipurpose Complex',type:'College showcase',prices:{u16:110,u17:110},url:'https://lonestar-sc.com/tournaments/boys-college-showcase/',notes:'Two games. Thanksgiving weekend. Organizer registration closes November 2; player-profile roster freeze November 18.',travel:'Plan for a two-night stay; exact arrival and departure are pending match times. Family hotel, transportation and meals are additional.'},
  {id:'jago',title:'Gordon Jago Classic Showcase',short:'Jago Showcase',dates:'December 4–6',month:'DEC',day:'4–6',start:'2026-12-04',end:'2026-12-06',location:'North Texas • venue to confirm',venue:'Venue and field assignments to be confirmed.',type:'College showcase',prices:{u17:70},url:'https://jagoshowcase.com/tournament/',notes:'Proposed for U17. Final team entry and acceptance are pending.',travel:'Travel details will follow confirmed venue and schedule.'},
  {id:'snowball',title:'NTX Celtic Snowball Cup',short:'Snowball Cup',dates:'December 11–13',month:'DEC',day:'11–13',start:'2026-12-11',end:'2026-12-13',location:'North Texas • fields to confirm',venue:'Complex and team field assignments to be confirmed.',type:'Tournament',prices:{u16:60},url:'https://www.ntxceltictournaments.com/',notes:'Proposed for U16. Final team entry and acceptance are pending.',travel:'Travel details will follow confirmed venue and schedule.'},
 ];
 const DETAILS = {
  premier:{
-  venue:'Dallas-area venues · see the full list below.',
-  venues:['University of Texas Dallas','Railroad Park','Lake Park','Chinn Chapel Soccer Complex','Bakersfield Soccer Complex','The Athletic Club'],
-  recruiting:'U15–U19 showcase play is advertised for college exposure. A specific 2026 attending-college list has not been verified; the organizer also offers a separate Friday ID camp.',
-  recruitingUrl:'https://tigertournaments.com/id-camps',recruitingLink:'College exposure & ID camp information',
-  clinic:{title:'Fall Showcase ID Camp',date:'Friday, November 13, 2026',details:'UTD Soccer Complex, Richardson · Check-in 5:30 p.m.; camp 6–9 p.m. Central. Attending schools and price are announced through camp registration.',fee:'Separate player registration; camp fee is additional.',url:'https://tigertournaments.leagueapps.com/camps/5082404-2026-fall-showcase-id-camp',link:'ID camp details & registration'},
+  venue:'Plano-area parks · team field assignments pending.',
+  venues:['Russell Creek Park','High Point Park','Carpenter Park'],
+  recruiting:'Boys and girls U10–U19 tournament. The organizer lists Dallas Cup qualification for boys U10–U16 and girls U10–U19; the boys U17 division is outside that qualifier range.',
+  recruitingUrl:'https://dallastexans.com/tournaments-camps/dtsc-fall-festival/',recruitingLink:'Official Fall Festival information',
+  clinic:null,
  },
  lonestar:{
   venue:'Round Rock Multipurpose Complex',venues:['Round Rock Multipurpose Complex'],
@@ -39,8 +39,9 @@ const DETAILS = {
 // Content updates do not alter event IDs or per-player team registration prices.
 for (const event of EVENTS) Object.assign(event, DETAILS[event.id]);
 export const TEAM_NAMES={u16:'11 Brave Barber · U16',u17:'10 Barber · U17'};
-export const COMMIT_CLOSE='2026-11-04T06:00:00.000Z';
-export function isClosed(now=Date.now()){return now>=Date.parse(COMMIT_CLOSE);}
+// Registration remains open until the coaches announce a new deadline.
+export const COMMIT_CLOSE=null;
+export function isClosed(now=Date.now()){return COMMIT_CLOSE!==null&&now>=Date.parse(COMMIT_CLOSE);}
 export function validateSelections(team,ids){
  if(!Array.isArray(ids)||ids.length>3||ids.some(id=>typeof id!=='string')||new Set(ids).size!==ids.length)throw new Error('Choose each event only once.');
  if(ids.some(id=>!EVENTS.some(e=>e.id===id&&e.prices[team]!==undefined)))throw new Error('One or more events are unavailable for this team.');

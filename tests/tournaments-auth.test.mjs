@@ -12,11 +12,12 @@ function fixture(){
  sqlite.prepare('INSERT INTO staff VALUES(?,?)').run('staff@example.com','Manager');
  let sent=[];return {sqlite,db,secret:'test-secret-only-'.repeat(4),send:async(email,code)=>{sent.push({email,code});},sent,now:1000000,ip:'192.0.2.1'};
 }
-test('all event combinations and Central commitment deadline',()=>{
+test('all event combinations and reopened registration',()=>{
  for(const team of ['u16','u17']){const events=EVENTS.filter(e=>e.prices[team]!==undefined);assert.equal(events.length,3);for(let mask=0;mask<8;mask++){const selected=events.filter((_,i)=>mask&(1<<i));assert.equal(totalFor(team,selected.map(e=>e.id)),selected.reduce((sum,e)=>sum+e.prices[team],0));}}
  assert.equal(totalFor('u16',['premier','lonestar','snowball']),250);assert.equal(totalFor('u17',['premier','lonestar','jago']),260);
  assert.throws(()=>validateSelections('u16',['jago']));assert.throws(()=>validateSelections('u17',['snowball']));assert.throws(()=>validateSelections('u17',['jago','jago']));
- assert.equal(isClosed(Date.parse('2026-11-04T05:59:59Z')),false);assert.equal(isClosed(Date.parse('2026-11-04T06:00:00Z')),true);
+ assert.equal(isClosed(Date.parse('2026-11-12T06:00:00Z')),false);assert.equal(isClosed(Date.parse('2026-12-13T06:00:00Z')),false);
+ const festival=EVENTS[0];assert.equal(festival.title,'Dallas Texans Fall Festival');assert.equal(festival.start,'2026-11-20');assert.equal(festival.end,'2026-11-22');assert.equal(festival.prices.u16,80);assert.equal(festival.prices.u17,80);assert.equal(festival.clinic,null);
 });
 test('only roster emails receive codes; response does not disclose membership',async()=>{
  const f=fixture();assert.deepEqual(await requestCode({...f,email:'FAMILY@example.com'}),{ok:true});assert.deepEqual(await requestCode({...f,email:'unknown@example.com'}),{ok:true});assert.equal(f.sent.length,1);

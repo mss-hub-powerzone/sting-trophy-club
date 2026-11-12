@@ -15,7 +15,7 @@ Sign-in codes expire after ten minutes and five guesses. Resends have a 60-secon
 
 ## Registration and payments
 
-Commitments close November 3, 2026 at 11:59 p.m. America/Chicago. Payments are due November 7. Managers can adjust commitments after the deadline and maintain hotel and payment records. The site records payments; it does not charge families or publish Snap! Spend invoices. Manager CSV exports show event selections and player balances for invoicing/reconciliation. Prices and allowed team/event combinations are validated on the server.
+Registration is open for all fall events until coaches announce a new deadline. Dallas Texans Fall Festival (November 20–22) replaces Fall Premier at $80 per player for both teams. The internal premier event ID is preserved to retain existing selections and payment records. Payment instructions come from team managers. Managers can adjust commitments after the deadline and maintain hotel and payment records. The site records payments; it does not charge families or publish Snap! Spend invoices. Manager CSV exports show event selections and player balances for invoicing/reconciliation. Prices and allowed team/event combinations are validated on the server.
 
 ## Validation
 

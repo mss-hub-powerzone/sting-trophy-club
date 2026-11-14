@@ -50,3 +50,9 @@ export function validateSelections(team,ids){
 export function totalFor(team,ids){return validateSelections(team,ids).reduce((sum,id)=>sum+EVENTS.find(e=>e.id===id).prices[team],0);}
 export function csvCell(value){let s=String(value??'');if(/^[\s]*[=+@-]/.test(s))s="'"+s;return '"'+s.replaceAll('"','""')+'"';}
 export function validUrl(value){if(!value)return ''; const u=new URL(value);if(u.protocol!=='https:')throw new Error('Use an https booking link.');return u.href;}
+
+export function validateAnswers(team,answers){
+ const events=EVENTS.filter(e=>e.prices[team]!==undefined);
+ if(!answers||typeof answers!=='object'||Array.isArray(answers)||Object.keys(answers).length!==events.length||events.some(e=>typeof answers[e.id]!=='boolean')||Object.keys(answers).some(id=>!events.some(e=>e.id===id)))throw new Error('Choose Yes or No for every tournament.');
+ return validateSelections(team,events.filter(e=>answers[e.id]).map(e=>e.id));
+}

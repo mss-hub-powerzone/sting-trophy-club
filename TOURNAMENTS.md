@@ -1,6 +1,6 @@
 # Fall 2026 family registration
 
-The family hub lives at `/tournaments`. Plans and team photos are public. Roster details, saved commitments, team counts, hotel information, and album links are returned only after email verification. No ChatGPT account is used.
+The family hub lives at `/tournaments`. Plans and team photos are public. Families choose a player name without signing in and answer Yes or No for every eligible tournament. The public RSVP API exposes player names, teams, and selected-player commitment answers only. Payment records, contacts, hotel information, album links, and manager controls remain protected by email verification. Public responses use optimistic revision checks; existing payment records are preserved. Staff exports distinguish Yes, No, and No response. No ChatGPT account is used.
 
 ## Runtime configuration
 

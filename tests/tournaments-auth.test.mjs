@@ -1,9 +1,10 @@
+import {saveRsvp} from '../app/tournaments/rsvp-core.mjs';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
 import {requestCode,verifyCode,session,sessionCookie,COOKIE,digest} from '../app/tournaments/auth-core.mjs';
-import {EVENTS,totalFor,validateSelections,isClosed} from '../app/tournaments/domain.mjs';
+import {EVENTS,totalFor,validateSelections,validateAnswers,isClosed} from '../app/tournaments/domain.mjs';
 function fixture(){
  const sqlite=new DatabaseSync(':memory:');sqlite.exec(readFileSync(new URL('../db/tournaments.sql',import.meta.url),'utf8'));
  const db={prepare(sql){let args=[];const stmt=sqlite.prepare(sql);return {bind(...values){args=values;return this;},async first(){return stmt.get(...args)||null;},async all(){return {results:stmt.all(...args)};},async run(){return {meta:{changes:stmt.run(...args).changes}};}};},async batch(statements){return Promise.all(statements.map(s=>s.run()));}};
@@ -45,4 +46,21 @@ test('resend cooldown, mail failure cleanup, and staff sessions',async()=>{
 test('request and verification IP limits survive new email addresses',async()=>{
  const f=fixture();for(let i=0;i<20;i++)await requestCode({...f,email:`unknown${i}@example.com`});await requestCode({...f,email:'family@example.com'});assert.equal(f.sent.length,0);
  const g=fixture();await requestCode({...g,email:'family@example.com'});for(let i=0;i<50;i++)await verifyCode({...g,email:'unknown@example.com',code:'00000000'});assert.equal(await verifyCode({...g,email:'family@example.com',code:g.sent[0].code}),null);
+});
+
+test('public Yes/No responses require every event and preserve payment records',async()=>{
+ const f=fixture();
+ assert.throws(()=>validateAnswers('u16',{premier:true}));
+ assert.throws(()=>validateAnswers('u16',{premier:true,lonestar:false,snowball:'no'}));
+ assert.throws(()=>validateAnswers('u16',{premier:true,lonestar:false,snowball:false,jago:true}));
+ const answers={premier:true,lonestar:false,snowball:false};
+ assert.deepEqual(validateAnswers('u16',answers),['premier']);
+ assert.equal(await saveRsvp(f.db,'one',validateAnswers('u16',answers),0,answers),true);
+ f.sqlite.prepare('UPDATE registrations SET paid_cents=8000,payment_note=? WHERE player_id=?').run('Staff only','one');
+ const no={premier:false,lonestar:false,snowball:false};
+ assert.equal(await saveRsvp(f.db,'one',validateAnswers('u16',no),1,no),true);
+ const row=f.sqlite.prepare('SELECT * FROM registrations WHERE player_id=?').get('one');
+ assert.equal(row.selections,'[]');assert.equal(row.revision,2);assert.equal(row.paid_cents,8000);assert.equal(row.payment_note,'Staff only');
+ assert.equal(await saveRsvp(f.db,'one',['premier'],1,answers),false);
+ assert.equal(f.sqlite.prepare('SELECT COUNT(*) AS n FROM audit').get().n,2);
 });

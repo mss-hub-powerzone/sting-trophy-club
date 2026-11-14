@@ -1,5 +1,5 @@
 import {access,database,getPlayers,sameOrigin,json} from '../../access.server';
-import {totalFor,csvCell,validUrl,EVENTS} from '../../domain.mjs';
+import {totalFor,csvCell,validUrl,EVENTS,currentRegistration} from '../../domain.mjs';
 export async function POST(req:Request){
  const raw=await req.text();if(raw.length>16000)return json({error:'Request too large.'},413);
  if(!sameOrigin(req))return json({error:'Refresh before saving.'},403);const a=await access();if(!a?.admin)return json({error:'Staff access required.'},403);
@@ -17,7 +17,7 @@ export async function POST(req:Request){
  }catch(e){console.error('admin update failed',e);return json({error:'Could not save. Check the details and try again.'},400);}
 }
 export async function GET(){const a=await access();if(!a?.admin)return json({error:'Staff access required.'},403);try{const players=await getPlayers();const rows=(await database().prepare('SELECT * FROM registrations').all()).results as any[];
- const data=[['Team','Player','Event','Commitment','Registration price','Player total','Paid to date','Player balance','Updated (UTC)'],...players.flatMap(p=>{const r=rows.find(r=>r.player_id===p.id);const events=EVENTS.filter(e=>(e.prices as any)[p.team]!==undefined);if(!r)return events.map(e=>[p.team,p.name,e.title,'No response','','','','','']);const ids=JSON.parse(r.selections),total=totalFor(p.team,ids);return events.map((e:any,i:number)=>[p.team,p.name,e.title,ids.includes(e.id)?'Yes':'No',ids.includes(e.id)?e.prices[p.team]:0,i===0?total:'',i===0?r.paid_cents/100:'',i===0?total-r.paid_cents/100:'',r.updated_at]);})];
+ const data=[['Team','Player','Event','Commitment','Registration price','Player total','Paid to date','Player balance','Updated (UTC)'],...players.flatMap(p=>{const r=rows.find(r=>r.player_id===p.id);const events=EVENTS.filter(e=>(e.prices as any)[p.team]!==undefined);if(!r)return events.map(e=>[p.team,p.name,e.title,'No response','','','','','']);const current=currentRegistration(r),ids=current.selections,total=totalFor(p.team,ids);return events.map((e:any,i:number)=>[p.team,p.name,e.title,current.unanswered.includes(e.id)?'No response':ids.includes(e.id)?'Yes':'No',ids.includes(e.id)?e.prices[p.team]:0,i===0?total:'',i===0?r.paid_cents/100:'',i===0?total-r.paid_cents/100:'',r.updated_at]);})];
  return new Response('\uFEFF'+data.map(row=>row.map(csvCell).join(',')).join('\r\n'),{headers:{'Content-Type':'text/csv; charset=utf-8','Content-Disposition':'attachment; filename="sting-fall-2026-registrations.csv"','Cache-Control':'no-store'}});
  }catch{return json({error:'Export unavailable. Try again.'},503);}}
 

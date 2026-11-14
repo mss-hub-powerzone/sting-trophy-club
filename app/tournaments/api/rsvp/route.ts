@@ -1,6 +1,6 @@
 import {saveRsvp} from '../../rsvp-core.mjs';
 import {database,sameOrigin,json} from '../../access.server';
-import {isClosed,validateAnswers} from '../../domain.mjs';
+import {isClosed,validateAnswers,currentRegistration} from '../../domain.mjs';
 export const dynamic='force-dynamic';
 export async function GET(req:Request){try{
  const db=database();
@@ -8,7 +8,7 @@ export async function GET(req:Request){try{
  const id=new URL(req.url).searchParams.get('playerId');
  if(id&&!players.some(p=>p.id===id))return json({error:'Choose a player from the list.'},400);
  const record=id?await db.prepare('SELECT player_id,selections,revision,updated_at FROM registrations WHERE player_id=?').bind(id).first<any>():null;
- return json({players,record:record?{...record,selections:JSON.parse(record.selections)}:null,closed:isClosed()});
+ return json({players,record:record?currentRegistration(record):null,closed:isClosed()});
  }catch{return json({error:'Unable to load players. Please try again.'},503);}}
 export async function POST(req:Request){
  const raw=await req.text();if(raw.length>4000)return json({error:'Request too large.'},413);

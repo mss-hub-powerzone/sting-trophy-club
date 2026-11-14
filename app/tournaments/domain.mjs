@@ -56,3 +56,12 @@ export function validateAnswers(team,answers){
  if(!answers||typeof answers!=='object'||Array.isArray(answers)||Object.keys(answers).length!==events.length||events.some(e=>typeof answers[e.id]!=='boolean')||Object.keys(answers).some(id=>!events.some(e=>e.id===id)))throw new Error('Choose Yes or No for every tournament.');
  return validateSelections(team,events.filter(e=>answers[e.id]).map(e=>e.id));
 }
+
+// Dallas Texans replaced Fall Premier on Wednesday night, November 11.
+// Retain the original stored history; only responses saved after the swap count.
+export const TEXANS_RECONFIRM_FROM='2026-11-12T04:10:01.000Z';
+export function currentRegistration(record){
+ const selections=typeof record.selections==='string'?JSON.parse(record.selections):record.selections;
+ const needsTexans=!(Date.parse(record.updated_at)>=Date.parse(TEXANS_RECONFIRM_FROM));
+ return {...record,selections:needsTexans?selections.filter(id=>id!=='premier'):selections,unanswered:needsTexans?['premier']:[]};
+}

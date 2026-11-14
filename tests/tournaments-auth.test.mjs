@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
 import {requestCode,verifyCode,session,sessionCookie,COOKIE,digest} from '../app/tournaments/auth-core.mjs';
-import {EVENTS,totalFor,validateSelections,validateAnswers,isClosed} from '../app/tournaments/domain.mjs';
+import {EVENTS,totalFor,validateSelections,validateAnswers,isClosed,currentRegistration,TEXANS_RECONFIRM_FROM} from '../app/tournaments/domain.mjs';
 function fixture(){
  const sqlite=new DatabaseSync(':memory:');sqlite.exec(readFileSync(new URL('../db/tournaments.sql',import.meta.url),'utf8'));
  const db={prepare(sql){let args=[];const stmt=sqlite.prepare(sql);return {bind(...values){args=values;return this;},async first(){return stmt.get(...args)||null;},async all(){return {results:stmt.all(...args)};},async run(){return {meta:{changes:stmt.run(...args).changes}};}};},async batch(statements){return Promise.all(statements.map(s=>s.run()));}};
@@ -63,4 +63,13 @@ test('public Yes/No responses require every event and preserve payment records',
  assert.equal(row.selections,'[]');assert.equal(row.revision,2);assert.equal(row.paid_cents,8000);assert.equal(row.payment_note,'Staff only');
  assert.equal(await saveRsvp(f.db,'one',['premier'],1,answers),false);
  assert.equal(f.sqlite.prepare('SELECT COUNT(*) AS n FROM audit').get().n,2);
+});
+
+test('Texans carryovers reset without changing other events or payments',()=>{
+ const old={selections:'["premier","lonestar","snowball"]',updated_at:'2026-11-04T16:41:48.348Z',paid_cents:8000,payment_note:'Preserved',revision:4};
+ const reset=currentRegistration(old);
+ assert.deepEqual(reset.selections,['lonestar','snowball']);assert.deepEqual(reset.unanswered,['premier']);
+ assert.equal(reset.paid_cents,8000);assert.equal(reset.payment_note,'Preserved');assert.equal(reset.revision,4);assert.equal(old.selections,'["premier","lonestar","snowball"]');
+ const fresh=currentRegistration({...old,updated_at:TEXANS_RECONFIRM_FROM});assert.deepEqual(fresh.selections,['premier','lonestar','snowball']);assert.deepEqual(fresh.unanswered,[]);
+ const no=currentRegistration({...old,selections:'["lonestar"]',updated_at:'2026-11-13T17:04:35.408Z'});assert.deepEqual(no.selections,['lonestar']);assert.deepEqual(no.unanswered,[]);
 });

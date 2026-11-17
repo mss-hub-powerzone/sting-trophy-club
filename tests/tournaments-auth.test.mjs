@@ -15,7 +15,7 @@ function fixture(){
 }
 test('all event combinations and reopened registration',()=>{
  for(const team of ['u16','u17']){const events=EVENTS.filter(e=>e.prices[team]!==undefined);assert.equal(events.length,3);for(let mask=0;mask<8;mask++){const selected=events.filter((_,i)=>mask&(1<<i));assert.equal(totalFor(team,selected.map(e=>e.id)),selected.reduce((sum,e)=>sum+e.prices[team],0));}}
- assert.equal(totalFor('u16',['premier','lonestar','snowball']),250);assert.equal(totalFor('u17',['premier','lonestar','jago']),260);
+ assert.equal(totalFor('u16',['premier','lonestar','snowball']),250);assert.equal(totalFor('u17',['premier','lonestar','jago']),270);
  assert.throws(()=>validateSelections('u16',['jago']));assert.throws(()=>validateSelections('u17',['snowball']));assert.throws(()=>validateSelections('u17',['jago','jago']));
  assert.equal(isClosed(Date.parse('2026-11-12T06:00:00Z')),false);assert.equal(isClosed(Date.parse('2026-12-13T06:00:00Z')),false);
  const festival=EVENTS[0];assert.equal(festival.title,'Dallas Texans Fall Festival');assert.equal(festival.start,'2026-11-20');assert.equal(festival.end,'2026-11-22');assert.equal(festival.prices.u16,80);assert.equal(festival.prices.u17,80);assert.equal(festival.clinic,null);

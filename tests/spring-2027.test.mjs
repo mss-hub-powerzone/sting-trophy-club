@@ -1,5 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {validateInterest,validatePreferences,interestLabel} from '../app/spring-2027/domain.mjs';
+test('initial interest accepts Maybe without treating it or earlier Yes as a commitment',()=>{
+ const answers=Object.fromEntries(eligibleEvents('u16').map(e=>[e.id,'maybe']));assert.deepEqual(validateInterest('u16',answers),answers);
+ assert.throws(()=>validateInterest('u16',{...answers,disney:true}));assert.throws(()=>validateInterest('u16',{}));
+ const p={local:'interested',drive:'maybe',fly:'unavailable',weekends:{'2027-05-29':'maybe'},notes:'Hotel costs matter.'};assert.deepEqual(validatePreferences(p),p);
+ assert.throws(()=>validatePreferences({...p,fly:''}));assert.throws(()=>validatePreferences({...p,weekends:{'wrong':'maybe'}}));assert.match(interestLabel(true),/not a commitment/);
+});
 import {EVENTS,ALTERNATIVES,PHOTO_BUDGET,PAYING_PLAYERS,playerPrice,eligibleEvents,validateAnswers,validateGuest,deadlines,eventPrice,coachBudgetFor} from '../app/spring-2027/domain.mjs';
 test('travel events include coach expenses and Houston is exactly $110',()=>{
  const houston=EVENTS.find(e=>e.id==='houston');assert.equal(eventPrice(houston),110);assert.equal(coachBudgetFor(houston),670);

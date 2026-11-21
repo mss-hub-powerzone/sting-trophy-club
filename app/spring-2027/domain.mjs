@@ -1,4 +1,5 @@
 export const PHOTO_BUDGET=250;
+export const INTEREST_DUE='2026-12-11T23:59:59-06:00';
 export const PAYING_PLAYERS=17;
 export const INTEREST_OPTIONS=[['interested','Interested'],['maybe','Maybe / need details'],['unavailable','Not available']];
 export const WEEKENDS=[['2027-04-16','April 16–18'],['2027-04-23','April 23–25'],['2027-05-01','May 1–2'],['2027-05-07','May 7–9'],['2027-05-14','May 14–16'],['2027-05-29','May 29–31 · Memorial Day']];

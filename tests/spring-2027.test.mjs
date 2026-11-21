@@ -7,7 +7,7 @@ test('initial interest accepts Maybe without treating it or earlier Yes as a com
  const p={local:'interested',drive:'maybe',fly:'unavailable',weekends:{'2027-05-29':'maybe'},notes:'Hotel costs matter.'};assert.deepEqual(validatePreferences(p),p);
  assert.throws(()=>validatePreferences({...p,fly:''}));assert.throws(()=>validatePreferences({...p,weekends:{'wrong':'maybe'}}));assert.match(interestLabel(true),/not a commitment/);
 });
-import {EVENTS,ALTERNATIVES,PHOTO_BUDGET,PAYING_PLAYERS,playerPrice,eligibleEvents,validateAnswers,validateGuest,deadlines,eventPrice,coachBudgetFor,gamesFor} from '../app/spring-2027/domain.mjs';
+import {EVENTS,ALTERNATIVES,PHOTO_BUDGET,PAYING_PLAYERS,playerPrice,eligibleEvents,validateAnswers,validateGuest,deadlines,eventPrice,coachBudgetFor,gamesFor,INTEREST_DUE} from '../app/spring-2027/domain.mjs';
 test('travel events include coach expenses and Houston is exactly $110',()=>{
  const houston=EVENTS.find(e=>e.id==='houston');assert.equal(eventPrice(houston),110);assert.equal(coachBudgetFor(houston),595);
  assert.equal(eventPrice(EVENTS.find(e=>e.id==='supercup')),100);
@@ -42,3 +42,5 @@ test('guest interest requires parent contact, eligibility details and consent',(
 });
 
 test('every proposal has a rounded placeholder budget and explicit game-count metadata',()=>{for(const e of [...EVENTS,...ALTERNATIVES]){const price=eventPrice(e);assert(price>=80&&price%10===0);const g=gamesFor(e);assert(g&&g.notes);if(g.min!==null&&g.max!==null)assert(g.max>=g.min);}assert.equal(eventPrice(EVENTS.find(e=>e.id==='houston'),{coachCount:2}),150);assert.deepEqual([gamesFor(EVENTS.find(e=>e.id==='houston')).min,gamesFor(EVENTS.find(e=>e.id==='houston')).max],[2,2]);assert.equal(gamesFor(ALTERNATIVES.find(e=>e.id==='classic-challenge')).min,null);});
+
+test('interest deadline is Friday at the start of Snowball Cup weekend in Central time',()=>{assert.equal(INTEREST_DUE,'2026-12-11T23:59:59-06:00');assert.equal(new Date(INTEREST_DUE).getUTCDay(),6);});

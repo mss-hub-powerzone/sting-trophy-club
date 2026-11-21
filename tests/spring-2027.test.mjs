@@ -1,6 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {EVENTS,ALTERNATIVES,PHOTO_BUDGET,PAYING_PLAYERS,playerPrice,eligibleEvents,validateAnswers,validateGuest,deadlines} from '../app/spring-2027/domain.mjs';
+import {EVENTS,ALTERNATIVES,PHOTO_BUDGET,PAYING_PLAYERS,playerPrice,eligibleEvents,validateAnswers,validateGuest,deadlines,eventPrice,coachBudgetFor} from '../app/spring-2027/domain.mjs';
+test('travel events include coach expenses and Houston is exactly $110',()=>{
+ const houston=EVENTS.find(e=>e.id==='houston');assert.equal(eventPrice(houston),110);assert.equal(coachBudgetFor(houston),670);
+ assert.equal(eventPrice(EVENTS.find(e=>e.id==='supercup')),97);
+ assert.equal(coachBudgetFor(EVENTS.find(e=>e.id==='wsa')),680);
+ assert.equal(eventPrice(EVENTS.find(e=>e.id==='disney'),{entry:1500}),null);
+ assert.equal(eventPrice(EVENTS.find(e=>e.id==='disney'),{entry:1500,coachBudget:1700}),203);
+ assert.equal(eventPrice(houston,{entry:950,coachBudget:0}),71);
+});
 test('family deadlines give a week for collection and another week before organizer cutoffs',()=>{
  const expected={disney:['2027-01-20','2027-01-27','2027-02-03'],supercup:['2027-03-05','2027-03-12','2027-03-19'],'dallas-open':['2027-04-11','2027-04-18','2027-04-25'],houston:['2027-04-18','2027-04-25','2027-05-02']};
  for(const [id,dates] of Object.entries(expected)){const d=deadlines(EVENTS.find(e=>e.id===id));assert.deepEqual([d.commit,d.payment,d.cutoff],dates);assert.equal(d.confirmed,true);}

@@ -1,6 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {EVENTS,PHOTO_BUDGET,PAYING_PLAYERS,playerPrice,eligibleEvents,validateAnswers,validateGuest} from '../app/spring-2027/domain.mjs';
+import {EVENTS,ALTERNATIVES,PHOTO_BUDGET,PAYING_PLAYERS,playerPrice,eligibleEvents,validateAnswers,validateGuest,deadlines} from '../app/spring-2027/domain.mjs';
+test('family deadlines give a week for collection and another week before organizer cutoffs',()=>{
+ const expected={disney:['2027-01-20','2027-01-27','2027-02-03'],supercup:['2027-03-05','2027-03-12','2027-03-19'],'dallas-open':['2027-04-11','2027-04-18','2027-04-25'],houston:['2027-04-18','2027-04-25','2027-05-02']};
+ for(const [id,dates] of Object.entries(expected)){const d=deadlines(EVENTS.find(e=>e.id===id));assert.deepEqual([d.commit,d.payment,d.cutoff],dates);assert.equal(d.confirmed,true);}
+ for(const e of [...EVENTS,...ALTERNATIVES]){const d=deadlines(e);assert(d.commit&&d.payment&&d.cutoff);assert.equal((Date.parse(d.payment)-Date.parse(d.commit))/86400000,7);assert.equal((Date.parse(d.cutoff)-Date.parse(d.payment))/86400000,7);}
+ assert.equal(deadlines(EVENTS.find(e=>e.id==='wsa')).confirmed,false);
+ const custom=deadlines(EVENTS[0],{cutoff:'2027-03-01',cutoffConfirmed:true});assert.equal(custom.commit,'2027-02-15');assert.equal(custom.payment,'2027-02-22');assert.equal(custom.confirmed,true);
+});
 test('player fees include one photo package and always round up across 17 payers',()=>{
  assert.equal(PHOTO_BUDGET,250);assert.equal(PAYING_PLAYERS,17);
  assert.equal(playerPrice(1395),97);assert.equal(playerPrice(950),71);assert.equal(playerPrice(1050),77);assert.equal(playerPrice(825),64);assert.equal(playerPrice(null),null);
